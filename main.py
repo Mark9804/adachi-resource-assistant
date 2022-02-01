@@ -40,8 +40,9 @@ def fill_image(imagePath):
         elif 256 in imageSize and imageRatio < 1:
             newImage = fill_with_blank(image, imageSize, 256, 256)
         else:
-            print("未找到 " + imagePath + " 的解决方案")
-            return
+            print("将 " + imagePath + " 填充至 1:1")
+            fillSize = max(imageSize)
+            newImage = fill_with_blank(image, imageSize, fillSize, fillSize)
 
         os.rename(imagePath, basename[0] + "_backup.png")
         # noinspection PyUnboundLocalVariable
