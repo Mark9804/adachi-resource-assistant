@@ -13,21 +13,39 @@ def find_images():
     return pendingImages
 
 
+def fill_with_blank(original, originalSize, width, height):
+    newImage = Image.new("RGBA", (width, height), (255, 255, 255, 0))
+    pastebin = original.copy()
+    pastePosition = (width - originalSize[0], height - originalSize[1])
+    newImage.paste(pastebin, pastePosition)
+
+    return newImage
+
+
 def fill_image(imagePath):
+    standards = [(320, 1024), (256, 256)]
     image = Image.open(imagePath)
     imageSize = image.size
-    if imageSize == (320, 1024):
+    imageRatio = imageSize[1] / imageSize[0]
+    if imageSize in standards:
         print(imagePath + " 不需要处理")
     else:
         print(imagePath + " 处理中")
-        basename = os.path.splitext(imagePath)  # (path_til_basename, ext)
-        newImage = Image.new("RGBA", (320, 1024), (255, 0, 0, 0))
-        pastebin = image.copy()
-        pastePosition = (
-            newImage.size[0] - imageSize[0], newImage.size[1] - imageSize[1])
-        newImage.paste(pastebin, pastePosition)
+        basename = os.path.splitext(imagePath)
+
+        # 内鬼网裁剪时不会改变宽度，只会改变高度（gacha splash art例外，该图片的原始尺寸为 2048 × 1024）
+        # 由宽高比例综合宽度信息，判断图像的用途
+        if 320 in imageSize and imageRatio > 1.5:
+            newImage = fill_with_blank(image, imageSize, 320, 1024)
+        elif 256 in imageSize and imageRatio < 1:
+            newImage = fill_with_blank(image, imageSize, 256, 256)
+        else:
+            print("未找到 " + imagePath + " 的解决方案")
+            return
+
         os.rename(imagePath, basename[0] + "_backup.png")
-        newImage.save(imagePath, quality=95)
+        # noinspection PyUnboundLocalVariable
+        newImage.save(imagePath)
 
 
 if __name__ == "__main__":
