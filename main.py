@@ -13,10 +13,10 @@ def find_images():
     return pendingImages
 
 
-def fill_with_blank(original, originalSize, width, height):
+def fill_with_blank(original, originalSize, width, height, type="normal"):
     newImage = Image.new("RGBA", (width, height), (255, 255, 255, 0))
     pastebin = original.copy()
-    pastePosition = (width - originalSize[0], height - originalSize[1])
+    pastePosition = (int((width - originalSize[0])/2), height - originalSize[1]) if type == "normal" else (int((width - originalSize[0])/2), int((height - originalSize[1])/2))
     newImage.paste(pastebin, pastePosition)
 
     return newImage
@@ -37,12 +37,12 @@ def fill_image(imagePath):
         # 由宽高比例综合宽度信息，判断图像的用途
         if 320 in imageSize and imageRatio > 1.5:
             newImage = fill_with_blank(image, imageSize, 320, 1024)
-        elif 256 in imageSize and imageRatio < 1:
+        elif 256 in imageSize:
             newImage = fill_with_blank(image, imageSize, 256, 256)
         else:
             print("将 " + imagePath + " 填充至 1:1")
             fillSize = max(imageSize)
-            newImage = fill_with_blank(image, imageSize, fillSize, fillSize)
+            newImage = fill_with_blank(image, imageSize, fillSize, fillSize, type="fit-square")
 
         os.rename(imagePath, basename[0] + "_backup.png")
         # noinspection PyUnboundLocalVariable
