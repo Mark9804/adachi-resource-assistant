@@ -16,7 +16,7 @@ def get_png(characterName, imagePrefix):
     print(characterName, fileUrl)
     rawBytes = requests.get(fileUrl, headers=headers)
     with open(imagePath, "wb") as f:
-        file.write(rawBytes.content)
+        f.write(rawBytes.content)
 
 
 def png_to_webp(pngPath):
