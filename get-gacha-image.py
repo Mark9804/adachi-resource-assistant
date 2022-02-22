@@ -3,6 +3,8 @@ import os
 import sys
 import requests
 from PIL import Image, ImageFilter
+import subprocess
+from platform import system
 
 
 def read_config(namesPath):
@@ -28,6 +30,17 @@ def png_to_webp(pngPath):
     image.save(savePath, "webp", quality=95)
     os.remove(pngPath)
 
+def open_in_explorer(path):
+    userSystem = system()
+    if userSystem == 'Windows':
+        subprocess.Popen('explorer "' + path + '"', shell=False)
+    elif userSystem == 'Darwin':
+        subprocess.Popen(["open", path])
+    elif userSystem == 'Linux':
+        try:
+            subprocess.Popen('nautilus "' + path + '"', shell=False)
+        except:
+            pass
 
 if __name__ == "__main__":
     wd = os.path.dirname(__file__)
@@ -53,3 +66,5 @@ if __name__ == "__main__":
             png_path = os.path.join(root, file)
             if png_path.endswith(".png"):
                 png_to_webp(png_path)
+
+    open_in_explorer(save_path)
