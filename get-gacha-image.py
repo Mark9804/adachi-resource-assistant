@@ -1,15 +1,6 @@
-import yaml
-import os
 import sys
 import requests
-from PIL import Image, ImageFilter
-import subprocess
-from platform import system
-
-
-def read_config(namesPath):
-    with open(namesPath, 'r') as settings:
-        return yaml.full_load(settings)
+from lib.APIs import *
 
 
 def get_png(characterName, imagePrefix):
@@ -20,27 +11,6 @@ def get_png(characterName, imagePrefix):
     with open(imagePath, "wb") as f:
         f.write(rawBytes.content)
 
-
-def png_to_webp(pngPath):
-    baseName = os.path.splitext(pngPath)[0]
-    fileName = os.path.basename(pngPath)
-    print("正在转换 " + fileName + "到webp…")
-    savePath = baseName + ".webp"
-    image = Image.open(pngPath).filter(ImageFilter.GaussianBlur(radius=0.05))
-    image.save(savePath, "webp", quality=95)
-    os.remove(pngPath)
-
-def open_in_explorer(path):
-    userSystem = system()
-    if userSystem == 'Windows':
-        subprocess.Popen('explorer "' + path + '"', shell=False)
-    elif userSystem == 'Darwin':
-        subprocess.Popen(["open", path])
-    elif userSystem == 'Linux':
-        try:
-            subprocess.Popen('nautilus "' + path + '"', shell=False)
-        except:
-            pass
 
 if __name__ == "__main__":
     wd = os.path.dirname(__file__)
