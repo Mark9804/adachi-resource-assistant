@@ -1,17 +1,30 @@
-## get-gacha-image.py
+# adachi-resource-assistant
+
+## Start
 
 ```shell
-python3 get-gacha-image.py [角色中文名 角色标识名] …
+git clone https://github.com/Mark9804/adachi-resource-assistant.git
+cd ./adachi-resource-assistant/
+python3 -m venv ./.venv/
+source ./.venv/bin/activate
+pip3 install -r ./requirements.txt
 ```
 
-角色标识名即内鬼网网址上的角色名称，例如 ht<span>tps://genshin</span>.honeyhunterworld.com/db/char/<ins>**qiqi**</ins>/?lang=CHS
+## Usage
 
-当没有输入时，会从 `names.yml` 当中获取所有可用的链接
-
-## fill_image.py
+## 抓取角色图片
 
 ```shell
-python3 fill_image.py -/path/to/image1.png -path/to/image2.png …
+python3 ./get-gacha-image.py 刻晴 keqing
+python3 ./get-gacha-image.py
 ```
 
-如果不传入任何参数，则默认扫描当前文件夹下的所有文件（包含子文件夹）
+第二个参数来源于[内鬼网](https://genshin.honeyhunterworld.com/?lang=CHS)的人物页面链接，例如 `https://genshin.honeyhunterworld.com/db/char/keqing/?lang=CHS` 中的 `keqing` 。不给出参数时，则从 `names.yml` 当中获取所有可用的角色。
+
+## 切图
+
+```shell
+python3 ./fill_image.py /path/to/image1.png
+```
+
+不给出参数时，则递归扫描当前目录。
