@@ -1,16 +1,11 @@
+#!/usr/bin/env python3
+
 import sys
-from api import *
+from api import rootdir, findImages, fillImage
 
-if __name__ == "__main__":
-    working_dir = os.path.dirname(__file__)
+if "__main__" == __name__:
+    argc = len(sys.argv)
+    images = sys.argv[1:] if argc > 1 else findImages(rootdir, extension=".png")
 
-    images = (
-        sys.argv[1:]
-        if len(sys.argv) >= 2
-        else find_images(working_dir, extension=".png")
-    )
-
-    for img in images:
-        fill_image(img)
-
-    globals().pop("img", None)
+    for image in images:
+        fillImage(image)

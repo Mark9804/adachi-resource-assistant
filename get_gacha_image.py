@@ -1,50 +1,56 @@
+#!/usr/bin/env python3
+
 import sys
+import signal
 import requests
-from api import *
+import os
+from api import rootdir, readConfig, png2Webp, exploreDir
+
+outdir = os.path.join(rootdir, "resources_custom", "Version2", "wish", "character")
 
 
-def get_png(characterName, imagePrefix):
-    fileUrl = (
-        "https://genshin.honeyhunterworld.com/img/char/"
-        + imagePrefix
-        + "_gacha_card.png"
-    )
-    imagePath = os.path.join(save_path, characterName + ".png")
-    print("获取：{}".format(fileUrl))
-    # FIXME handle exception
-    rawBytes = requests.get(fileUrl, headers=headers)
-    # FIXME handle exception
-    with open(imagePath, "wb") as f:
-        f.write(rawBytes.content)
-    return imagePath
-
-
-def get_webp(characterName, imagePrefix):
-    png_to_webp(get_png(characterName, imagePrefix))
-
-
-if __name__ == "__main__":
-    wd = os.path.dirname(__file__)
-    names_path = os.path.join(wd, "names.yml")
-    names = read_config(names_path)
-    save_path = os.path.join(wd, "resources_custom", "Version2", "wish", "character")
-    headers = {
-        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.80 Safari/537.36"
-    }
-    argc = len(sys.argv)
-
-    if not os.path.exists(save_path):
-        os.makedirs(save_path)
-
-    if argc > 2:
-        get_webp(*sys.argv[1:3])
-    elif 1 == argc:
-        for name, prefix in dict.items(names["characters"]):
-            get_webp(name, prefix)
-    else:
-        print("参数错误看说明文档")
+def getPng(name, short):
+    headers = {"user-agent": "curl/7.83.0"}
+    url = "https://genshin.honeyhunterworld.com/img/char/{}_gacha_card.png".format(short)
+    target = os.path.join(outdir, "{}.png".format(name))
 
     try:
-        open_in_explorer(save_path).wait()
+        with open(target, "wb") as f:
+            f.write(requests.get(url, headers=headers).content)
+
+        print("获取：{}".format(url))
+    except:
+        print("获取失败：{}".format(url), file=sys.stderr)
+
+    return target
+
+
+def quit(errcode=0):
+    sys.exit(errcode)
+
+
+if "__main__" == __name__:
+    names = readConfig(os.path.join(rootdir, "names.yml"))
+    argc = len(sys.argv)
+
+    if not os.path.exists(outdir):
+        try:
+            os.makedirs(outdir)
+        except Exception as e:
+            print("错误：{}".format(e), file=sys.stderr)
+            quit(-1)
+
+    if argc > 2:
+        png2Webp(getPng(*sys.argv[1:3]))
+    elif 1 == argc:
+        for name, short in dict.items(names["characters"]):
+            png2Webp(getPng(name, short))
+    else:
+        # XXX print usage ?
+        print("参数错误", file=sys.stderr)
+        quit(-1)
+
+    try:
+        exploreDir(outdir).wait()
     except Exception as e:
-        print("可以忽略的错误：{}".format(e))
+        print("非致命错误：{}".format(e), file=sys.stderr)
