@@ -1,5 +1,5 @@
 import sys
-from lib.APIs import *
+from api import *
 
 if __name__ == "__main__":
     working_dir = os.path.dirname(__file__)

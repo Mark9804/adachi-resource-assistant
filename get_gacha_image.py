@@ -1,6 +1,6 @@
 import sys
 import requests
-from lib.APIs import *
+from api import *
 
 
 def get_png(characterName, imagePrefix):
