@@ -34,3 +34,7 @@ python3 ./fill_image.py
 ```
 
 参数列表为文件列表，不给出参数时，则递归扫描当前目录中的所有 `.png` 文件。
+
+## 许可
+
+[MIT License](LICENSE) 。
