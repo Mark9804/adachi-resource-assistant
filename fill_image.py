@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import sys
-from api import rootdir, findImages, fillImage
+from utils import rootdir, findImages, fillImage
 
 if "__main__" == __name__:
     argc = len(sys.argv)

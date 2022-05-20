@@ -4,7 +4,7 @@ import sys
 import signal
 import requests
 import os
-from api import rootdir, readConfig, png2Webp, exploreDir
+from utils import rootdir, readConfig, png2Webp, exploreDir
 
 outdir = os.path.join(rootdir, "resources_custom", "Version2", "wish", "character")
 
