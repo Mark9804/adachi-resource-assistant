@@ -43,7 +43,7 @@ def exploreDir(path):
     elif "Darwin" == osName:
         cmdline = "open {}".format(path)
     elif "Linux" == osName:
-        cmdline = "xdg-open '{}'".format(path)
+        cmdline = "xdg-open '{}'".format(path) if "DISPLAY" in os.environ else "ls -lh '{}'".format(path)
     else:
         raise Exception("无法在 {} 系统上打开文件浏览器".format(osName))
 
