@@ -1,24 +1,19 @@
-from PIL import Image, ImageFilter
 import subprocess
 import os
 import sys
+from subprocess import Popen
+from typing import Union
+from PIL import Image, ImageFilter
 from platform import system
-import yaml
 
-__all__ = ["rootdir", "readConfig", "png2Webp", "exploreDir", "findImages", "fillImage"]
-
-rootdir = os.path.dirname(os.path.realpath(__file__))
+__all__ = ["exploreDir", "findImages", "fillImage", "png2Webp"]
 
 
-def readConfig(path):
-    try:
-        with open(path, "r") as f:
-            return yaml.full_load(f)
-    except:
-        raise
-
-
-def png2Webp(path):
+def png2Webp(path: str) -> None:
+    """
+    :param path: png 文件路径
+    :return: None
+    """
     basename, filename, dirname = (
         os.path.splitext(path)[0],
         os.path.basename(path),
@@ -31,11 +26,15 @@ def png2Webp(path):
         Image.open(path).filter(ImageFilter.GaussianBlur(radius=0.05)).save(targetPath, "webp", quality=95)
         os.remove(path)
         print("转换：{}".format(targetPath))
-    except:
+    except Exception:
         print("转换失败：{}".format(targetPath), file=sys.stderr)
 
 
-def exploreDir(path):
+def exploreDir(path: str) -> object:
+    """
+    :param path: 目录路径
+    :return: 用于浏览目录的进程
+    """
     osName = system()
 
     if "Windows" == osName:
@@ -49,13 +48,18 @@ def exploreDir(path):
 
     try:
         process = subprocess.Popen(cmdline, shell=True)
-    except:
+    except Exception:
         raise
 
     return process
 
 
-def findImages(workdir, extension=".png"):
+def findImages(workdir: str, extension: str = ".png") -> list:
+    """
+    :param workdir: 寻找图片文件的工作目录
+    :param extension: 后缀名
+    :return: 图片文件列表
+    """
     images = []
 
     for root, _, files in os.walk(workdir, topdown=True):
@@ -66,19 +70,29 @@ def findImages(workdir, extension=".png"):
     return images
 
 
-def fillImageWithBlank(image, size=[256, 256], square=False):
+def fillImageWithBlank(image: object, size=[256, 256], square: bool = False) -> object:
+    """
+    :param image: Image 对象
+    :param size: 长宽像素
+    :param square: 是正方形
+    :return: Image 对象
+    """
     try:
         width, height = [max(image.size) for _ in range(2)] if square else size
         pos = int((width - image.size[0]) / 2), int((height - image.size[1]) / 2 if square else 1)
         imageNew = Image.new("RGBA", (width, height), (255, 255, 255, 0))
         imageNew.paste(image.copy(), pos)
-    except:
+    except Exception:
         raise
 
     return imageNew
 
 
-def fillImage(path):
+def fillImage(path: str) -> None:
+    """
+    :param path: 图片路径
+    :return: None
+    """
     standards = [(320, 1024), (256, 256)]
 
     try:
@@ -108,5 +122,5 @@ def fillImage(path):
             fillImageWithBlank(image, square=True).save(path)
 
         print("填充：{}".format(path))
-    except:
+    except Exception as e:
         print("填充失败：{}".format(e), file=sys.stderr)
