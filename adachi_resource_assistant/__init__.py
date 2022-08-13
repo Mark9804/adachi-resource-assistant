@@ -1,8 +1,8 @@
 from adachi_resource_assistant.names import characters
-from adachi_resource_assistant.utils import exploreDir, findImages, fillImage, png2Webp
+from adachi_resource_assistant.utils import exploreDir, findImages, fillImageFile, png2Webp
 
-__version__ = "3.0"
-__all__ = ["fillImage", "getGachaImage"]
+__version__ = "3.0.1"
+__all__ = ["fillImageFile", "getGachaImage"]
 
 
 def fillImage():
@@ -13,7 +13,7 @@ def fillImage():
     images = sys.argv[1:] if argc > 1 else findImages(os.getcwd(), extension=".png")
 
     for image in images:
-        fillImage(image)
+        fillImageFile(image)
 
 
 def getGachaImage():
