@@ -17,11 +17,11 @@ pip3 install -U adachi_resource_assistant
 根据角色信息或者配置文件生成角色卡池图片。
 
 ```shell
-adachi_resource_get_gacha_image 刻晴 keqing
+adachi_resource_get_gacha_image 刻晴 keqing_042
 adachi_resource_get_gacha_image
 ```
 
-第二个参数来源于 [Honey Impact](https://genshin.honeyhunterworld.com/?lang=CN) 的角色页面链接，如 `https://genshin.honeyhunterworld.com/db/char/keqing/?lang=CHS` 中的 `keqing` 。不给出参数则获取所有可用的角色。
+第二个参数来源于 [Honey Impact](https://genshin.honeyhunterworld.com/?lang=CN) 的角色页面链接，如 `https://genshin.honeyhunterworld.com/keqing_042/?lang=CHS` 中的 `keqing_042` 。不给出参数则获取所有可用的角色。
 
 ### 填充素材图片
 
