@@ -1,12 +1,13 @@
-import subprocess
 import os
+import subprocess
 import sys
+from platform import system
 from subprocess import Popen
 from typing import Union
-from PIL import Image, ImageFilter
-from platform import system
 
-__all__ = ["exploreDir", "findImages", "fillImage", "png2Webp"]
+from PIL import Image, ImageFilter
+
+__all__ = ["exploreDir", "findImages", "fillImageFile", "png2Webp"]
 
 
 def png2Webp(path: str) -> None:
@@ -26,11 +27,11 @@ def png2Webp(path: str) -> None:
         Image.open(path).filter(ImageFilter.GaussianBlur(radius=0.05)).save(targetPath, "webp", quality=95)
         os.remove(path)
         print("转换：{}".format(targetPath))
-    except Exception:
+    except Exception as _:
         print("转换失败：{}".format(targetPath), file=sys.stderr)
 
 
-def exploreDir(path: str) -> object:
+def exploreDir(path: str) -> Popen:
     """
     :param path: 目录路径
     :return: 用于浏览目录的进程
@@ -70,13 +71,16 @@ def findImages(workdir: str, extension: str = ".png") -> list:
     return images
 
 
-def fillImageWithBlank(image: object, size=[256, 256], square: bool = False) -> object:
+def fillImageWithBlank(image: Image, size: Union[tuple, None] = None, square: bool = False) -> Image:
     """
     :param image: Image 对象
     :param size: 长宽像素
     :param square: 是正方形
     :return: Image 对象
     """
+    if size is None:
+        size = [256, 256]
+
     try:
         width, height = [max(image.size) for _ in range(2)] if square else size
         pos = int((width - image.size[0]) / 2), int((height - image.size[1]) / 2 if square else 1)
@@ -88,7 +92,7 @@ def fillImageWithBlank(image: object, size=[256, 256], square: bool = False) -> 
     return imageNew
 
 
-def fillImage(path: str) -> None:
+def fillImageFile(path: str) -> None:
     """
     :param path: 图片路径
     :return: None
