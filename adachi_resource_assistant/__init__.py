@@ -1,13 +1,35 @@
 from adachi_resource_assistant.names import characters
 from adachi_resource_assistant.utils import exploreDir, findImages, fillImageFile, png2Webp
 
-__version__ = "3.0.1"
+__version__ = "3.0.2"
 __all__ = ["fillImageFile", "getGachaImage"]
+
+
+def deprecationWarnings():
+    import warnings
+    from functools import partial
+
+    text = (
+        "弃用警告（ Deprecation Warning ）\n"
+        "弃用：\n"
+        "弃用：从原神 3.1 版本开始此模块已经弃用，功能已经整合到 Adachi-BOT ，使用说明详见《资源文件制作指引》。\n"
+        "弃用：\n"
+        "弃用：This module has been deprecated since Genshin Impact 3.1 version, and the function has been integrated into Adachi-BOT. For details, please refer to《资源文件制作指引》.\n"
+        "弃用：\n"
+        "弃用：Adachi-BOT ：          https://github.com/Arondight/Adachi-BOT\n"
+        "弃用：《资源文件制作指引》： https://github.com/Arondight/Adachi-BOT/blob/master/docs/%E8%B5%84%E6%BA%90%E6%96%87%E4%BB%B6%E5%88%B6%E4%BD%9C%E6%8C%87%E5%BC%95.md#%E5%85%B6%E4%BB%96%E8%B5%84%E6%BA%90%E6%96%87%E4%BB%B6\n"
+        "弃用：\n"
+    )
+
+    warnings.simplefilter("default")
+    warnings.warn(text, DeprecationWarning)
 
 
 def fillImage():
     import os
     import sys
+
+    deprecationWarnings()
 
     argc = len(sys.argv)
     images = sys.argv[1:] if argc > 1 else findImages(os.getcwd(), extension=".png")
@@ -20,6 +42,8 @@ def getGachaImage():
     import os
     import sys
     import requests
+
+    deprecationWarnings()
 
     outdir = os.path.join(os.getcwd(), "resources_custom", "Version2", "wish", "character")
 

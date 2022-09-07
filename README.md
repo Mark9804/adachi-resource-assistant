@@ -1,5 +1,11 @@
 # adachi-resource-assistant
 
+## 弃用警告（ Deprecation Warning ）
+
+从原神 3.1 版本开始此模块已经弃用，功能已经整合到 [Adachi-BOT](https://github.com/Arondight/Adachi-BOT) ，使用说明详见[《资源文件制作指引》](https://github.com/Arondight/Adachi-BOT/blob/master/docs/%E8%B5%84%E6%BA%90%E6%96%87%E4%BB%B6%E5%88%B6%E4%BD%9C%E6%8C%87%E5%BC%95.md#%E5%85%B6%E4%BB%96%E8%B5%84%E6%BA%90%E6%96%87%E4%BB%B6)
+
+This module has been deprecated since Genshin Impact 3.1 version, and the function has been integrated into [Adachi-BOT](https://github.com/Arondight/Adachi-BOT). For details, please refer to [《资源文件制作指引》](https://github.com/Arondight/Adachi-BOT/blob/master/docs/%E8%B5%84%E6%BA%90%E6%96%87%E4%BB%B6%E5%88%B6%E4%BD%9C%E6%8C%87%E5%BC%95.md#%E5%85%B6%E4%BB%96%E8%B5%84%E6%BA%90%E6%96%87%E4%BB%B6).
+
 ## 说明
 
 A resource assistant for [Adachi-BOT](https://github.com/Arondight/Adachi-BOT).
